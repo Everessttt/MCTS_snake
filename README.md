@@ -5,7 +5,7 @@ Run the game by running the executable located in MCTS_snake/MCTS_snake_executab
 
 ## Author
 
-Created by **Kai Cokeley**, **California State Univeristy, Chico**, **CSCI411**
+Created by **Kai Cokeley**, **California State Univeristy Chico**, **CSCI411**
 
 ## License
 
