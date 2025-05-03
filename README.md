@@ -1,6 +1,7 @@
-Monte Carlo Search Tree implementation for snake
-Game/ simulation created in Godot with the following programming languages: C++, GDScript, Jenova SDK
-Run the game by running the executable located in MCTS_snake/MCTS_snake_executable/MCTS_snake.exe
+## Monte Carlo Search Tree implementation for snake
+Game / simulation created in Godot with the following programming languages: C++, GDScript, Jenova SDK.
+
+Run the game by running the executable located in MCTS_snake/MCTS_snake_executable/MCTS_snake.exe.
 
 ## Author
 
