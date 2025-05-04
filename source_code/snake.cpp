@@ -194,6 +194,8 @@ void start_game(Caller* instance) {
 	auto now = std::chrono::steady_clock::now();
 	auto prev_frame_time = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 	self->set_meta("prev_frame_time", prev_frame_time);
+	self->set_meta("avg_frame_time", 0);
+	self->set_meta("start_time", prev_frame_time);
 }
 
 void on_timer_timeout(Node2D* self) {
@@ -233,11 +235,19 @@ void on_timer_timeout(Node2D* self) {
 
 	//track current frame time
 	int prev_frame_time = self->get_meta("prev_frame_time");
+	int avg_frame_time = self->get_meta("avg_frame_time");
 	auto now = std::chrono::steady_clock::now();
 	auto curr_frame_time = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+	avg_frame_time = ((num_frames - 1) * avg_frame_time + curr_frame_time - prev_frame_time + (num_frames / 2)) / num_frames;
 	LineEdit* frame_time = GetNode<LineEdit>("game/ui/MarginContainer/VBoxContainer/HBoxContainer6/frame_time");
-	frame_time->set_text(String::num_uint64(curr_frame_time - prev_frame_time));
+	frame_time->set_text(String::num_uint64(avg_frame_time / 1000) + "." + String::num_uint64(avg_frame_time % 1000));
 	self->set_meta("prev_frame_time", curr_frame_time);
+	self->set_meta("avg_frame_time", avg_frame_time);
+
+	//update total runtime
+	int start_time = self->get_meta("start_time");
+	LineEdit* total_time = GetNode<LineEdit>("game/ui/MarginContainer/VBoxContainer/HBoxContainer8/total_time");
+	total_time->set_text(String::num_uint64((curr_frame_time - start_time) / 1000) + "." + String::num_uint64((curr_frame_time - start_time) % 1000));
 
 	//find snake length
 	double snake_length = 1;

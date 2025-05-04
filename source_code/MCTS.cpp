@@ -77,7 +77,7 @@ void MCTS::update(Array snake_matrix, int played_action) {
 	}
 
 	//soft update, matching fruit positions
-	/*if(prev_fruit_pos == curr_fruit_pos) {
+	if(prev_fruit_pos == curr_fruit_pos) {
 		for(auto& child : root->children) {
 			if(child->action == played_action) {
 				root = child;
@@ -91,8 +91,7 @@ void MCTS::update(Array snake_matrix, int played_action) {
 	//hard update, non-matching fruit positions
 	else {
 		root = make_shared<Node>(nullptr, snake_matrix);
-	}*/
-	root = make_shared<Node>(nullptr, snake_matrix);
+	}
 }
 
 void MCTS::selection() {
@@ -169,7 +168,7 @@ void MCTS::rollout(shared_ptr<Node> node) {
 	Array end_state = start_state;
 
 	int rollout_iterations = 0;
-	while(!is_terminal(end_state) && rollout_iterations != max_rollout_depth) {
+	while(!is_terminal(end_state) && rollout_iterations != max_rollout_depth && !is_max_length(end_state)) {
 		//perform random playout from possible actions
 		vector<int> possible_actions = get_possible_actions(start_state);
 
@@ -196,6 +195,22 @@ void MCTS::backpropagation(shared_ptr<Node> node, double simulation_reward) {
 	}
 }
 
+bool MCTS::is_max_length(Array snake_matrix) {
+	for(int y = 0; y < snake_matrix.size(); y++) {
+		Array row = snake_matrix[y];
+		for(int x = 0; x < row.size(); x++) {
+			int cell_value = row[x];
+			
+			//snake is max length
+			if(cell_value == snake_matrix.size() * row.size()) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 bool MCTS::is_terminal(Array snake_matrix) {
 	int one_counter = 0;
 	for(int y = 0; y < snake_matrix.size(); y++) {
@@ -219,7 +234,10 @@ bool MCTS::is_terminal(Array snake_matrix) {
 }
 
 double MCTS::evaluate_state(Array start_state, Array end_state) {
-	if(start_state == end_state ) {
+	if(is_max_length(end_state)) {
+		return 76.0;
+	}
+	else if(start_state == end_state ) {
 		return 0.0;
 	}
 
@@ -259,10 +277,7 @@ double MCTS::evaluate_state(Array start_state, Array end_state) {
 	double max_dist = start_state.size() * row.size();
 
 	double reward;
-	if(snake_length_end == start_state.size() * row.size()) {
-		reward = 76.0;
-	}
-	else if(snake_length_end > snake_length_start) {
+	if(snake_length_end > snake_length_start) {
 		reward = snake_length_end / max_dist;
 	}
 	else {

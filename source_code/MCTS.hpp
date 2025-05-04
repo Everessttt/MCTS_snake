@@ -53,6 +53,7 @@ private:
 	void backpropagation(shared_ptr<Node> node, double simulation_result);
 
 	//MCTS additional functionality
+	bool is_max_length(Array snake_matrix);
 	bool is_terminal(Array snake_matrix);
 	double evaluate_state(Array start_state, Array end_state);
 	vector<int> get_possible_actions(Array snake_matrix);
