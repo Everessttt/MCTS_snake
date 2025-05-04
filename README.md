@@ -3,9 +3,11 @@ Game / simulation created in Godot with the following programming languages: C++
 
 Run the game by running the executable located in MCTS_snake/MCTS_snake_executable/MCTS_snake.exe.
 
+Test cases are provided in MCTS_snake/test_cases, where each test case is a screenshot of the final simulation. Simulation parameters can be identified in the screenshot and this result can be replicated by the user by copying the parameters and performing the simulation with MCTS.
+
 ## Author
 
-Created by **Kai Cokeley**, **California State Univeristy Chico**, **CSCI411**
+Created by Kai Cokeley, California State Univeristy Chico, CSCI411
 
 ## License
 
